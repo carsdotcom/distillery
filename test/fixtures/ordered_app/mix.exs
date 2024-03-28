@@ -15,15 +15,15 @@ defmodule OrderedApp.Mixfile do
   def application do
     [
       mod: {OrderedApp, []},
-      extra_applications: []
+      extra_applications: [:crypto, :sasl, :logger]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:lager, "~> 3.5"},
-      {:db_connection, "~> 1.1"},
+      {:lager, "~> 3.9"},
+      {:db_connection, "~> 2.6"},
       {:distillery, path: "../../../."}
     ]
   end
