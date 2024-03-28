@@ -32,7 +32,7 @@ jobs:
             - name: Install dependencies
               run: |
                   epmd -daemon
-                  mix do deps.get, eqc.install --mini
+                  mix deps.get
             - name: Run tests
               continue-on-error: true
               run: mix test --exclude=integration
