@@ -19,20 +19,20 @@ defmodule Distillery.Test.CookiesTest do
   #   end
   # end
 
-  defp is_valid_cookie(x) when is_atom(x) do
-    str = Atom.to_string(x)
-    chars = String.to_charlist(str)
+  # defp is_valid_cookie(x) when is_atom(x) do
+  #   str = Atom.to_string(x)
+  #   chars = String.to_charlist(str)
 
-    with false <- String.contains?(str, ["-", "+", "'", "\"", "\\", "#", ","]),
-         false <- Enum.any?(chars, fn b -> not (b >= ?! && b <= ?~) end),
-         64 <- byte_size(str) do
-      true
-    else
-      _ -> false
-    end
-  end
+  #   with false <- String.contains?(str, ["-", "+", "'", "\"", "\\", "#", ","]),
+  #        false <- Enum.any?(chars, fn b -> not (b >= ?! && b <= ?~) end),
+  #        64 <- byte_size(str) do
+  #     true
+  #   else
+  #     _ -> false
+  #   end
+  # end
 
-  defp is_valid_cookie(_x), do: false
+  # defp is_valid_cookie(_x), do: false
 
   defp is_parsed_by_command_line(cookie) do
     cookie = Atom.to_string(cookie)

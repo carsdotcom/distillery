@@ -15,7 +15,7 @@ defmodule OrderedApp.Mixfile do
   def application do
     [
       mod: {OrderedApp, []},
-      extra_applications: [:crypto, :sasl, :logger]
+      extra_applications: []
     ]
   end
 

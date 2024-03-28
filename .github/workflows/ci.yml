@@ -19,7 +19,7 @@ jobs:
 
         strategy:
             matrix:
-                elixir: [1.16]
+                elixir: [1.16.1]
                 otp_release: [26.0]
 
         steps:
