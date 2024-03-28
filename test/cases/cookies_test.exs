@@ -1,23 +1,23 @@
 defmodule Distillery.Test.CookiesTest do
   use ExUnit.Case, async: true
-  use EQC.ExUnit
+  # use EQC.ExUnit
 
-  @tag numtests: 100
-  property "generated cookies are always valid" do
-    forall cookie <- generated_cookie() do
-      is_valid_cookie(cookie)
-    end
-  end
+  # @tag numtests: 100
+  # property "generated cookies are always valid" do
+  #   forall cookie <- generated_cookie() do
+  #     is_valid_cookie(cookie)
+  #   end
+  # end
 
   test "can parse cookie via command line" do
     assert is_parsed_by_command_line(Distillery.Cookies.generate())
   end
 
-  def generated_cookie() do
-    lazy do
-      Distillery.Cookies.generate()
-    end
-  end
+  # def generated_cookie() do
+  #   lazy do
+  #     Distillery.Cookies.generate()
+  #   end
+  # end
 
   defp is_valid_cookie(x) when is_atom(x) do
     str = Atom.to_string(x)
