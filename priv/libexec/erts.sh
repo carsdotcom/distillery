@@ -326,7 +326,7 @@ USAGE
 
 # Run IEx
 iex() {
-    elixir --no-halt --erl "-noshell -user" +iex "$@"
+    elixir --no-halt --erl "-noshell -user Elixir.IEx" +iex "$@"
 }
 
 # Echoes the current ERTS version
