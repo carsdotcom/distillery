@@ -20,9 +20,9 @@ application environment will be dumped to a final sys.config file, which is
 subsequently used when booting the "real" release.
 
 !!! warning
-Since config providers only execute pre-boot, you must restart the release to
-pick up configuration changes. If using hot upgrades, the config providers
-will run during the upgrade, and so will pick up any config changes at that time.
+    Since config providers only execute pre-boot, you must restart the release to
+    pick up configuration changes. If using hot upgrades, the config providers
+    will run during the upgrade, and so will pick up any config changes at that time.
 
 There are some important properties you must keep in mind when designing and
 implementing a provider:
@@ -37,14 +37,14 @@ implementing a provider:
   needs configuration, you have a circular dependency problem. In order to solve
   this, you need to have users provide the initial configuration via
   `sys.config` or `config.exs`, that way you can bootstrap the provider.
-
+  
 ## Example: JSON
 
 The following is a relatively simple example, which allows one to represent the
 typical `config.exs` structure in JSON, so given the following Mix config file:
 
 ```elixir
-import Config
+use Mix.Config
 
 config :myapp,
   port: 8080

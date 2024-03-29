@@ -10,15 +10,15 @@ the attack surface is smaller. When combined with base images like Alpine Linux,
 you can even further reduce the size and attack surface of the final image.
 
 !!! info
-This guide assumes you are already familiar with building a release, if you
-have not seen how to do that, I would recommend visiting the
-[Walkthrough](../introduction/walkthrough.md) guide first.
+    This guide assumes you are already familiar with building a release, if you
+    have not seen how to do that, I would recommend visiting the
+    [Walkthrough](../introduction/walkthrough.md) guide first.
 
 !!! tip
-If you'd like to see an example project which makes uses of the information
-in this guide, check out
-[distillery-test](https://github.com/bitwalker/distillery-test). It's a
-great way to try things out without needing to create a new project!
+    If you'd like to see an example project which makes uses of the information
+    in this guide, check out
+    [distillery-test](https://github.com/bitwalker/distillery-test). It's a
+    great way to try things out without needing to create a new project!
 
 ## The Dockerfile
 
@@ -111,25 +111,25 @@ CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground
 ```
 
 !!! tip
-This guide uses Alpine Linux, but you can use a different base image, you
-can find official Elixir base images [here](https://hub.docker.com/_/elixir).
+    This guide uses Alpine Linux, but you can use a different base image, you
+    can find official Elixir base images [here](https://hub.docker.com/_/elixir).
 
-!!! warning
-Make sure that the version of Linux that you use for the final image
-matches the one used by the builder image (in this case,
-`elixir:1.7.2-alpine`, which uses Alpine Linux 3.8). If you use a different
-version, the release may not work, since the Erlang runtime was built
-against a different version of libc (or musl in Alpine's case)
+!!! warning 
+    Make sure that the version of Linux that you use for the final image
+    matches the one used by the builder image (in this case,
+    `elixir:1.7.2-alpine`, which uses Alpine Linux 3.8). If you use a different
+    version, the release may not work, since the Erlang runtime was built
+    against a different version of libc (or musl in Alpine's case)
 
 !!! info
-Our use of `yarn` above is optional, you can use whatever your project uses,
-just modify the Dockerfile as necessary. The choice to use `yarn` over `npm`
-is to take advantage of Yarn's significantly faster dependency fetching.
+    Our use of `yarn` above is optional, you can use whatever your project uses, 
+    just modify the Dockerfile as necessary. The choice to use `yarn` over `npm`
+    is to take advantage of Yarn's significantly faster dependency fetching.
 
 !!! tip
-While this Dockerfile enables `REPLACE_OS_VARS`, you will probably want to
-take advantage of the config provider for `Mix.Config` instead, see the [Handling
-Configuration](../config/runtime.md) document for more information.
+    While this Dockerfile enables `REPLACE_OS_VARS`, you will probably want to
+    take advantage of the config provider for `Mix.Config` instead, see the [Handling
+    Configuration](../config/runtime.md) document for more information.
 
 To prevent reperforming steps when not necessary, add a `.dockerignore` to your project with the following:
 
@@ -146,7 +146,7 @@ priv/static/
 ```
 
 Feel free to extend it as necessary - ideally you want to ignore anything not involved in the build.
-
+    
 ## Building the image
 
 To help automate building images, it is recommended to use a Makefile or shell
@@ -185,8 +185,8 @@ $ make build
 ```
 
 !!! warning
-If `make` reports an error mentioning `multiple target patterns`, you need
-to ensure the Makefile is formatted with **tabs not spaces**.
+    If `make` reports an error mentioning `multiple target patterns`, you need
+    to ensure the Makefile is formatted with **tabs not spaces**.
 
 If `make` ran successfully, you now have a production-ready image!
 
@@ -212,7 +212,7 @@ The config file referenced here (`rel/config/config.exs`) should look something
 like the following:
 
 ```elixir
-import Config
+use Mix.Config
 
 config :myapp, MyApp.Repo,
   username: System.get_env("DATABASE_USER"),
@@ -281,10 +281,10 @@ db:
 ```
 
 !!! warning
-Be careful what you name the service! This name will be the hostname used to
-talk to the service. In this case, it will be `db`. You will also need to
-make sure the name used matches what is in `config/docker.env`.
-
+    Be careful what you name the service! This name will be the hostname used to
+    talk to the service. In this case, it will be `db`. You will also need to
+    make sure the name used matches what is in `config/docker.env`.
+    
 Notice again that we're feeding the service `docker.env` so that we can
 configure it.
 
@@ -305,18 +305,18 @@ You should now be able to open your browser to `http://localhost:4000` to see
 the running app.
 
 !!! tip
-You can also use Docker Swarm, by first initializing Swarm:
-
+    You can also use Docker Swarm, by first initializing Swarm: 
+    
     ```
     $ docker swarm init
     ```
-
+    
     And then deploying a new stack:
-
+    
     ```
     $ docker stack deploy -c docker-compose.yml myapp
     ```
-
+    
     This approach requires some minimal adjustments to our `docker-compose.yml`
     file, see the [Deploying To Digital Ocean](deploying_to_digital_ocean.md)
     guide to learn more.

@@ -1,3 +1,3 @@
--name umbrella@localhost
+-name umbrella@127.0.0.1
 
 -setcookie <%= release.profile.cookie %>
