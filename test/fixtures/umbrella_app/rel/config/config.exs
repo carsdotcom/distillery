@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Set configuration for Phoenix endpoint
 config :web, WebWeb.Endpoint,
@@ -10,4 +10,3 @@ config :web, WebWeb.Endpoint,
   url: [host: "localhost", port: 4000],
   root: ".",
   secret_key_base: "u1QXlca4XEZKb1o3HL/aUlznI1qstCNAQ6yme/lFbFIs0Iqiq/annZ+Ty8JyUCDc"
-

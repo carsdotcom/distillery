@@ -4,6 +4,7 @@ defmodule Distillery.Releases.Assembler do
   struct. It creates the release directory, copies applications, and generates release-specific
   files required by `:systools` and `:release_handler`.
   """
+  alias Config.Reader
   alias Distillery.Releases.Config
   alias Distillery.Releases.Release
   alias Distillery.Releases.Environment
@@ -655,7 +656,7 @@ defmodule Distillery.Releases.Assembler do
                {:ok, tokens, _} <- :erl_scan.string(String.to_charlist(templated)),
                {:ok, sys_config} <- :erl_parse.parse_term(tokens),
                :ok <- validate_sys_config(sys_config),
-               merged <- Mix.Config.merge(base_config, sys_config) do
+               merged <- Reader.merge(base_config, sys_config) do
             merged
           else
             err ->

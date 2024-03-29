@@ -3,6 +3,7 @@ defmodule DistilleryUmbrellaTest.MixProject do
 
   def project do
     [
+      name: "DistilleryUmbrellaTest",
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
       test_paths: [],
