@@ -174,7 +174,6 @@ Usage: $(basename "$0") [options] [.exs file] [data]
   --logger-otp-reports BOOL    Enables or disables OTP reporting
   --logger-sasl-reports BOOL   Enables or disables SASL reporting
   --no-halt                    Does not halt the Erlang VM after execution
-  --werl                       Uses Erlang's Windows shell GUI (Windows only)
 
 Options given after the .exs file or -- are passed down to the executed code.
 Options can be passed to the Erlang runtime using \$ELIXIR_ERL_OPTIONS or --erl.
@@ -297,8 +296,6 @@ USAGE
                   echo "--pipe-to : LOGDIR cannot be a switch" >&2 && exit 1
                 fi
                 ;;
-            --werl)
-                ;;
             *)
                 while [ $I -le $LENGTH ]; do
                     I=$((I + 1))
@@ -326,7 +323,7 @@ USAGE
 
 # Run IEx
 iex() {
-    elixir --no-halt --erl "-noshell -user Elixir.IEx" +iex "$@"
+    elixir --no-halt --erl "-noshell -user" +iex "$@"
 }
 
 # Echoes the current ERTS version
