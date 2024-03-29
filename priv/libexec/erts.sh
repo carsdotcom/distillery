@@ -204,7 +204,7 @@ See run_erl to learn more. To reattach, run: to_erl PIPEDIR.
 USAGE
           exit 1
         fi
-    MODE="elixir"
+    MODE="cli"
     ERL=""
     I=1
     E=0
@@ -213,13 +213,12 @@ USAGE
     while [ $I -le $LENGTH ]; do
         S=1
         case "$1" in
+            +elixirc)
+                set -- "$@" "$1"
+                ;;
             +iex)
                 set -- "$@" "$1"
                 MODE="iex"
-                ;;
-            +elixirc)
-                set -- "$@" "$1"
-                MODE="elixirc"
                 ;;
             -v|--no-halt)
                 set -- "$@" "$1"
@@ -316,9 +315,8 @@ USAGE
       I=$((I - 1))
     done
 
-    if [ "$MODE" != "iex" ]; then ERL="-noshell -s elixir start_cli $ERL"; fi
     #shellcheck disable=2086
-    erl $ELIXIR_ERL_OPTIONS $ERL "$@"
+    erl -noshell -elixir_root "$RELEASE_ROOT_DIR/lib" $ELIXIR_ERL_OPTIONS -s elixir start_$MODE $ERL "$@"
 }
 
 # Run IEx
