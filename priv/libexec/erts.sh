@@ -13,7 +13,8 @@ __rel_apps() {
               -e's/^[^a-z]*//' \
               -e's/,/-/' \
               -e's/"//' \
-              -e's/","[^"]*$//'
+              -e's/","[^"]*$//' \
+              -e's/",<<"[^"]*$//'
 }
 
 code_paths=()
@@ -173,7 +174,6 @@ Usage: $(basename "$0") [options] [.exs file] [data]
   --logger-otp-reports BOOL    Enables or disables OTP reporting
   --logger-sasl-reports BOOL   Enables or disables SASL reporting
   --no-halt                    Does not halt the Erlang VM after execution
-  --werl                       Uses Erlang's Windows shell GUI (Windows only)
 
 Options given after the .exs file or -- are passed down to the executed code.
 Options can be passed to the Erlang runtime using \$ELIXIR_ERL_OPTIONS or --erl.
@@ -204,7 +204,7 @@ See run_erl to learn more. To reattach, run: to_erl PIPEDIR.
 USAGE
           exit 1
         fi
-    MODE="elixir"
+    MODE="cli"
     ERL=""
     I=1
     E=0
@@ -213,13 +213,12 @@ USAGE
     while [ $I -le $LENGTH ]; do
         S=1
         case "$1" in
+            +elixirc)
+                set -- "$@" "$1"
+                ;;
             +iex)
                 set -- "$@" "$1"
                 MODE="iex"
-                ;;
-            +elixirc)
-                set -- "$@" "$1"
-                MODE="elixirc"
                 ;;
             -v|--no-halt)
                 set -- "$@" "$1"
@@ -296,8 +295,6 @@ USAGE
                   echo "--pipe-to : LOGDIR cannot be a switch" >&2 && exit 1
                 fi
                 ;;
-            --werl)
-                ;;
             *)
                 while [ $I -le $LENGTH ]; do
                     I=$((I + 1))
@@ -318,14 +315,13 @@ USAGE
       I=$((I - 1))
     done
 
-    if [ "$MODE" != "iex" ]; then ERL="-noshell -s elixir start_cli $ERL"; fi
     #shellcheck disable=2086
-    erl $ELIXIR_ERL_OPTIONS $ERL "$@"
+    erl -noshell -elixir_root "$RELEASE_ROOT_DIR/lib" $ELIXIR_ERL_OPTIONS -s elixir start_$MODE $ERL "$@"
 }
 
 # Run IEx
 iex() {
-    elixir --no-halt --erl "-noshell -user Elixir.IEx.CLI" +iex "$@"
+    elixir --no-halt --erl "-user elixir" +iex "$@"
 }
 
 # Echoes the current ERTS version

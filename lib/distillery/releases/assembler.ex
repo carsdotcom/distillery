@@ -4,6 +4,7 @@ defmodule Distillery.Releases.Assembler do
   struct. It creates the release directory, copies applications, and generates release-specific
   files required by `:systools` and `:release_handler`.
   """
+  alias Config.Reader
   alias Distillery.Releases.Config
   alias Distillery.Releases.Release
   alias Distillery.Releases.Environment
@@ -220,7 +221,7 @@ defmodule Distillery.Releases.Assembler do
     end
   rescue
     e in [File.Error] ->
-      {:error, {:assembler, {e, System.stacktrace()}}}
+      {:error, {:assembler, {e, __STACKTRACE__}}}
   catch
     :error, {:assembler, _mod, _reason} = err ->
       {:error, err}
@@ -655,7 +656,7 @@ defmodule Distillery.Releases.Assembler do
                {:ok, tokens, _} <- :erl_scan.string(String.to_charlist(templated)),
                {:ok, sys_config} <- :erl_parse.parse_term(tokens),
                :ok <- validate_sys_config(sys_config),
-               merged <- Mix.Config.merge(base_config, sys_config) do
+               merged <- Reader.merge(base_config, sys_config) do
             merged
           else
             err ->
@@ -860,7 +861,15 @@ defmodule Distillery.Releases.Assembler do
     # no work around for this
     old_cwd = File.cwd!()
     File.cd!(output_dir)
-    :ok = :release_handler.create_RELEASES('./', 'releases', '#{relfile}', [])
+
+    :ok =
+      :release_handler.create_RELEASES(
+        File.cwd!(),
+        Path.join([File.cwd!(), 'releases']),
+        '#{relfile}',
+        []
+      )
+
     File.cd!(old_cwd)
     :ok
   end
@@ -992,6 +1001,7 @@ defmodule Distillery.Releases.Assembler do
             "    this setting will prevent you from doing so without a rolling restart.\n" <>
             "    You may ignore this warning if you have no plans to use hot upgrades."
         )
+
         Shell.debug("Stripping release (#{path})")
 
         case :beam_lib.strip_release(String.to_charlist(path)) do
